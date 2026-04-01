@@ -1,0 +1,9 @@
+{
+  "short_name": "账单管理",
+  "name": "个人账单管理系统",
+  "icons": [],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#1890ff",
+  "background_color": "#ffffff"
+}

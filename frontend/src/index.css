@@ -1,0 +1,296 @@
+/* Health & Wellness App - Font Import */
+@import url('https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600;700&family=Raleway:wght@300;400;500;600;700&display=swap');
+
+/* CSS Variables - Health & Wellness Theme */
+:root {
+  --color-primary: #10B981;
+  --color-primary-hover: #059669;
+  --color-secondary: #34D399;
+  --color-cta: #8B5CF6;
+  --color-cta-hover: #7C3AED;
+  --color-background: #ECFDF5;
+  --color-background-alt: #D1FAE5;
+  --color-background-card: rgba(255, 255, 255, 0.85);
+  --color-surface: #ffffff;
+  --color-text: #064E3B;
+  --color-text-muted: #047857;
+  --color-border: #A7F3D0;
+  --color-border-light: #D1FAE5;
+  --font-heading: 'Lora', serif;
+  --font-body: 'Raleway', sans-serif;
+  --radius-lg: 24px;
+  --radius-md: 16px;
+  --radius-sm: 12px;
+  --shadow-soft: 0 4px 24px rgba(16, 185, 129, 0.12);
+  --shadow-hover: 0 8px 32px rgba(16, 185, 129, 0.18);
+  --gradient-hero: linear-gradient(135deg, #ECFDF5 0%, #D1FAE5 50%, #A7F3D0 100%);
+  --gradient-primary: linear-gradient(135deg, #10B981 0%, #34D399 100%);
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: var(--color-text);
+  background: var(--color-background);
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+/* Health & Wellness Auth Pages */
+.wellness-auth-container {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: var(--gradient-hero);
+  padding: 24px;
+  position: relative;
+  overflow: hidden;
+}
+
+.wellness-auth-container::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle at 30% 70%, rgba(52, 211, 153, 0.15) 0%, transparent 50%),
+              radial-gradient(circle at 70% 30%, rgba(139, 92, 246, 0.08) 0%, transparent 50%);
+  animation: float 20s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  50% { transform: translate(-2%, 2%) rotate(1deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wellness-auth-container::before {
+    animation: none;
+  }
+}
+
+.wellness-auth-card {
+  position: relative;
+  width: 100%;
+  max-width: 440px;
+  background: var(--color-background-card);
+  backdrop-filter: blur(20px);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border-light);
+  box-shadow: var(--shadow-soft);
+  padding: 48px 40px;
+  transition: box-shadow 0.3s ease-out;
+}
+
+.wellness-auth-card:hover {
+  box-shadow: var(--shadow-hover);
+}
+
+.wellness-auth-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.wellness-auth-logo svg {
+  width: 48px;
+  height: 48px;
+  color: var(--color-primary);
+}
+
+.wellness-auth-title {
+  font-family: var(--font-heading);
+  font-size: 28px;
+  font-weight: 600;
+  color: var(--color-text);
+  text-align: center;
+  margin: 0 0 8px 0;
+}
+
+.wellness-auth-subtitle {
+  font-family: var(--font-body);
+  font-size: 15px;
+  color: var(--color-text-muted);
+  text-align: center;
+  margin: 0 0 32px 0;
+  font-weight: 400;
+}
+
+/* Form Styling */
+.wellness-form .ant-form-item {
+  margin-bottom: 20px;
+}
+
+.wellness-form .ant-input,
+.wellness-form .ant-input-password .ant-input {
+  font-family: var(--font-body);
+  height: 48px;
+  border-radius: var(--radius-sm);
+  border: 1.5px solid var(--color-border);
+  background: rgba(255, 255, 255, 0.7);
+  font-size: 15px;
+  padding: 12px 16px;
+  transition: all 0.2s ease-out;
+}
+
+.wellness-form .ant-input:hover,
+.wellness-form .ant-input-password:hover .ant-input {
+  border-color: var(--color-secondary);
+}
+
+.wellness-form .ant-input:focus,
+.wellness-form .ant-input-password .ant-input:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15);
+}
+
+.wellness-form .ant-input-affix-wrapper {
+  height: 48px;
+  border-radius: var(--radius-sm);
+  border: 1.5px solid var(--color-border);
+  background: rgba(255, 255, 255, 0.7);
+  padding: 0 16px;
+  transition: all 0.2s ease-out;
+}
+
+.wellness-form .ant-input-affix-wrapper:hover {
+  border-color: var(--color-secondary);
+}
+
+.wellness-form .ant-input-affix-wrapper-focused {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15);
+}
+
+.wellness-form .ant-input-affix-wrapper .ant-input {
+  height: auto;
+  border: none;
+  background: transparent;
+  padding: 0;
+}
+
+.wellness-form .ant-input-prefix {
+  color: var(--color-text-muted);
+  margin-right: 12px;
+}
+
+/* Primary Button */
+.wellness-btn-primary {
+  height: 48px;
+  border-radius: var(--radius-sm);
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+  border: none;
+  font-family: var(--font-body);
+  font-size: 16px;
+  font-weight: 600;
+  color: white;
+  cursor: pointer;
+  transition: all 0.2s ease-out;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
+}
+
+.wellness-btn-primary:hover,
+.wellness-btn-primary:focus {
+  background: linear-gradient(135deg, var(--color-primary-hover) 0%, var(--color-primary) 100%);
+  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.35);
+  transform: translateY(-1px);
+}
+
+.wellness-btn-primary:active {
+  transform: translateY(0);
+}
+
+/* CTA Button */
+.wellness-btn-cta {
+  height: 48px;
+  border-radius: var(--radius-sm);
+  background: var(--color-cta);
+  border: none;
+  font-family: var(--font-body);
+  font-size: 16px;
+  font-weight: 600;
+  color: white;
+  cursor: pointer;
+  transition: all 0.2s ease-out;
+}
+
+.wellness-btn-cta:hover {
+  background: var(--color-cta-hover);
+}
+
+/* Link Styling */
+.wellness-link {
+  color: var(--color-primary);
+  font-weight: 500;
+  transition: color 0.2s ease-out;
+}
+
+.wellness-link:hover {
+  color: var(--color-cta);
+}
+
+.wellness-auth-footer {
+  text-align: center;
+  margin-top: 24px;
+  font-size: 14px;
+  color: var(--color-text-muted);
+}
+
+.wellness-auth-footer a {
+  color: var(--color-primary);
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.2s ease-out;
+}
+
+.wellness-auth-footer a:hover {
+  color: var(--color-cta);
+}
+
+/* Decorative Elements */
+.wellness-decor-leaf {
+  position: absolute;
+  opacity: 0.1;
+  pointer-events: none;
+}
+
+.wellness-decor-leaf-1 {
+  top: -20px;
+  right: -20px;
+  width: 120px;
+  height: 120px;
+  color: var(--color-primary);
+}
+
+.wellness-decor-leaf-2 {
+  bottom: -15px;
+  left: -15px;
+  width: 80px;
+  height: 80px;
+  color: var(--color-secondary);
+  transform: rotate(180deg);
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .wellness-auth-card {
+    padding: 32px 24px;
+    border-radius: var(--radius-md);
+  }
+  
+  .wellness-auth-title {
+    font-size: 24px;
+  }
+}
