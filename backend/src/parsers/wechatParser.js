@@ -37,7 +37,9 @@ function parseWechatExcel(fileInput) {
   
   const sheetName = workbook.SheetNames[0];
   const worksheet = workbook.Sheets[sheetName];
-  const rawData = xlsx.utils.sheet_to_json(worksheet, { header: 1 });
+  // 微信新版账单的时间列可能是 Excel 日期单元格。
+  // 使用格式化后的显示值读取，避免拿到原始序列号或 UTC Date 对象后再被错误换算。
+  const rawData = xlsx.utils.sheet_to_json(worksheet, { header: 1, raw: false, defval: '' });
   
   // 找到数据起始行（表头行）
   let headerRowIndex = -1;
@@ -193,19 +195,59 @@ function parseWechatRow(row, columnMapping, rowNumber) {
  * @returns {Date|null}
  */
 function parseWechatDateTime(dateTimeRaw) {
-  if (!dateTimeRaw) return null;
-  
+  if (dateTimeRaw === null || dateTimeRaw === undefined || dateTimeRaw === '') return null;
+
+  if (dateTimeRaw instanceof Date) {
+    if (isNaN(dateTimeRaw.getTime())) return null;
+    return new Date(
+      dateTimeRaw.getFullYear(),
+      dateTimeRaw.getMonth(),
+      dateTimeRaw.getDate(),
+      dateTimeRaw.getHours(),
+      dateTimeRaw.getMinutes(),
+      dateTimeRaw.getSeconds()
+    );
+  }
+
+  if (typeof dateTimeRaw === 'number' && Number.isFinite(dateTimeRaw)) {
+    const parsed = xlsx.SSF.parse_date_code(dateTimeRaw);
+    if (!parsed) return null;
+
+    return new Date(
+      parsed.y,
+      parsed.m - 1,
+      parsed.d,
+      parsed.H,
+      parsed.M,
+      Math.floor(parsed.S)
+    );
+  }
+
   const dateTimeStr = String(dateTimeRaw).trim();
-  
-  // 格式: "2025-10-31 19:15:39"
-  const match = dateTimeStr.match(/^(\d{4})-(\d{2})-(\d{2})\s+(\d{2}):(\d{2}):(\d{2})$/);
-  if (match) {
-    const [, year, month, day, hour, minute, second] = match;
+  if (!dateTimeStr) return null;
+
+  // 兼容 Excel 序列号被转成字符串的情况
+  if (/^\d+(?:\.\d+)?$/.test(dateTimeStr)) {
+    return parseWechatDateTime(Number(dateTimeStr));
+  }
+
+  // 兼容：
+  // 1. 旧版 "2025-10-31 19:15:39"
+  // 2. ISO "2025-10-31T19:15:39"
+  // 3. 带时区 "2025-10-31 19:15:39 UTC+08:00" / "2025-10-31T19:15:39+08:00"
+  // 账单入库使用 DATETIME，本质是本地账单时间，因此显式 +08:00 只做格式兼容，不再做二次时区换算。
+  const normalized = dateTimeStr.replace(/\u00A0/g, ' ').replace(/\//g, '-');
+  const localMatch = normalized.match(
+    /^(\d{4})-(\d{2})-(\d{2})[ T]+(\d{2}):(\d{2})(?::(\d{2})(?:\.\d+)?)?(?:\s*(?:UTC)?(?:\+08:00|\+0800))?$/i
+  );
+
+  if (localMatch) {
+    const [, year, month, day, hour, minute, second = '00'] = localMatch;
     return new Date(year, month - 1, day, hour, minute, second);
   }
-  
-  // 尝试直接解析
-  const date = new Date(dateTimeStr);
+
+  // 兜底兼容其他 JS 可识别格式
+  const date = new Date(normalized);
   return isNaN(date.getTime()) ? null : date;
 }
 
