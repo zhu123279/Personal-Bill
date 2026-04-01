@@ -117,7 +117,12 @@ const BillForm = ({ visible, bill, onCancel, onSuccess }) => {
         </Form.Item>
         
         <Form.Item name="categoryId" label="分类">
-          <Select placeholder="请选择分类" allowClear>
+          <Select
+            placeholder="请选择分类"
+            allowClear
+            showSearch
+            optionFilterProp="children"
+          >
             {categories.map(cat => (
               <Option key={cat.id} value={cat.id}>{cat.name}</Option>
             ))}
