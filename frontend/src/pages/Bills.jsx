@@ -17,7 +17,7 @@ const Bills = () => {
   const [importVisible, setImportVisible] = useState(false);
   const [batchEditVisible, setBatchEditVisible] = useState(false);
   const [editingBill, setEditingBill] = useState(null);
-  const [refreshKey, setRefreshKey] = useState(0);
+  const [refreshState, setRefreshState] = useState({ key: 0, resetPage: false });
   const [selectedIds, setSelectedIds] = useState([]);
   const [selectedSummary, setSelectedSummary] = useState({ totalIncome: 0, totalExpense: 0, count: 0 });
   const [deleting, setDeleting] = useState(false);
@@ -38,20 +38,21 @@ const Bills = () => {
   };
 
   const handleFormSuccess = () => {
+    const isEditing = Boolean(editingBill);
     setFormVisible(false);
     setEditingBill(null);
-    setRefreshKey(prev => prev + 1);
+    setRefreshState(prev => ({ key: prev.key + 1, resetPage: !isEditing }));
   };
 
   const handleImportSuccess = () => {
     setImportVisible(false);
-    setRefreshKey(prev => prev + 1);
+    setRefreshState(prev => ({ key: prev.key + 1, resetPage: true }));
   };
 
   const handleBatchEditSuccess = () => {
     setBatchEditVisible(false);
     setSelectedIds([]);
-    setRefreshKey(prev => prev + 1);
+    setRefreshState(prev => ({ key: prev.key + 1, resetPage: false }));
   };
 
   const handleSelectionChange = (keys, summary) => {
@@ -71,7 +72,7 @@ const Bills = () => {
       const result = await billService.batchDeleteBills(selectedIds);
       message.success(`成功删除 ${result.deleted} 条记录`);
       setSelectedIds([]);
-      setRefreshKey(prev => prev + 1);
+      setRefreshState(prev => ({ key: prev.key + 1, resetPage: false }));
     } catch (error) {
       message.error('批量删除失败');
     } finally {
@@ -184,7 +185,7 @@ const Bills = () => {
           <BillList 
             filters={filters} 
             onEdit={handleEdit} 
-            refreshKey={refreshKey}
+            refreshState={refreshState}
             onSelectionChange={handleSelectionChange}
           />
         </div>

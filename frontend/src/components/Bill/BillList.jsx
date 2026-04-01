@@ -4,7 +4,7 @@ import { EditOutlined, DeleteOutlined, EyeOutlined } from '@ant-design/icons';
 import dayjs from 'dayjs';
 import billService from '../../services/bill';
 
-const BillList = ({ filters, onEdit, refreshKey, onSelectionChange }) => {
+const BillList = ({ filters, onEdit, refreshState, onSelectionChange }) => {
   const [bills, setBills] = useState([]);
   const [loading, setLoading] = useState(false);
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
@@ -18,7 +18,15 @@ const BillList = ({ filters, onEdit, refreshKey, onSelectionChange }) => {
   const [currentBill, setCurrentBill] = useState(null);
 
   const onSelectionChangeRef = useRef(onSelectionChange);
+  const paginationRef = useRef(pagination);
+  const sortOrderRef = useRef(sortOrder);
+  const filtersRef = useRef(filters);
+  const fetchBillsRef = useRef(null);
+
   onSelectionChangeRef.current = onSelectionChange;
+  paginationRef.current = pagination;
+  sortOrderRef.current = sortOrder;
+  filtersRef.current = filters;
 
   const fetchBills = async (page, pageSize, order) => {
     setLoading(true);
@@ -28,7 +36,7 @@ const BillList = ({ filters, onEdit, refreshKey, onSelectionChange }) => {
         pageSize, 
         sortBy: 'transaction_time',
         sortOrder: order,
-        ...filters 
+        ...filtersRef.current 
       });
       setBills(result.bills);
       setPagination(prev => ({
@@ -48,9 +56,20 @@ const BillList = ({ filters, onEdit, refreshKey, onSelectionChange }) => {
     }
   };
 
+  fetchBillsRef.current = fetchBills;
+
   useEffect(() => {
-    fetchBills(1, pagination.pageSize, sortOrder);
-  }, [filters, refreshKey]);
+    fetchBillsRef.current(1, paginationRef.current.pageSize, sortOrderRef.current);
+  }, [filters]);
+
+  useEffect(() => {
+    if (!refreshState || refreshState.key === 0) {
+      return;
+    }
+
+    const targetPage = refreshState.resetPage ? 1 : paginationRef.current.current;
+    fetchBillsRef.current(targetPage, paginationRef.current.pageSize, sortOrderRef.current);
+  }, [refreshState]);
 
   const handleDelete = async (id) => {
     try {
