@@ -162,9 +162,17 @@ const Bills = () => {
               </Popconfirm>
             </>
           )}
-          <Button icon={<DownloadOutlined />} onClick={handleExport} loading={exporting}>
-            导出账单
-          </Button>
+          <Popconfirm
+            title="确定要导出当前筛选条件下的账单吗？"
+            onConfirm={handleExport}
+            okText="确定"
+            cancelText="取消"
+            placement="bottomRight"
+          >
+            <Button icon={<DownloadOutlined />} loading={exporting}>
+              导出账单
+            </Button>
+          </Popconfirm>
           <Button icon={<UploadOutlined />} onClick={() => setImportVisible(true)}>
             导入账单
           </Button>

@@ -426,7 +426,10 @@ const MonthlyReport = () => {
         styles={{ body: { maxHeight: '70vh', overflow: 'auto' } }}
       >
         <Table
-          dataSource={detailType === 'expense' ? expenseList : incomeList}
+          dataSource={detailType === 'expense' 
+            ? [...expenseList].sort((a, b) => b.amount - a.amount) 
+            : [...incomeList].sort((a, b) => b.amount - a.amount)
+          }
           columns={detailType === 'expense' ? expenseListColumns : incomeListColumns}
           rowKey="id"
           size="small"

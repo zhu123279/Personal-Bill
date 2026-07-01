@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { Table, Tag, Space, Button, Popconfirm, message, Modal, Descriptions } from 'antd';
-import { EditOutlined, DeleteOutlined, EyeOutlined } from '@ant-design/icons';
+import { EditOutlined, DeleteOutlined, EyeOutlined, CaretUpOutlined, CaretDownOutlined } from '@ant-design/icons';
 import dayjs from 'dayjs';
 import billService from '../../services/bill';
 
@@ -14,27 +14,30 @@ const BillList = ({ filters, onEdit, refreshState, onSelectionChange }) => {
     total: 0
   });
   const [sortOrder, setSortOrder] = useState('DESC');
+  const [sortBy, setSortBy] = useState('transaction_time');
   const [detailVisible, setDetailVisible] = useState(false);
   const [currentBill, setCurrentBill] = useState(null);
 
   const onSelectionChangeRef = useRef(onSelectionChange);
   const paginationRef = useRef(pagination);
   const sortOrderRef = useRef(sortOrder);
+  const sortByRef = useRef(sortBy);
   const filtersRef = useRef(filters);
   const fetchBillsRef = useRef(null);
 
   onSelectionChangeRef.current = onSelectionChange;
   paginationRef.current = pagination;
   sortOrderRef.current = sortOrder;
+  sortByRef.current = sortBy;
   filtersRef.current = filters;
 
-  const fetchBills = async (page, pageSize, order) => {
+  const fetchBills = async (page, pageSize, field, order) => {
     setLoading(true);
     try {
       const result = await billService.getBills({ 
         page, 
         pageSize, 
-        sortBy: 'transaction_time',
+        sortBy: field,
         sortOrder: order,
         ...filtersRef.current 
       });
@@ -59,7 +62,7 @@ const BillList = ({ filters, onEdit, refreshState, onSelectionChange }) => {
   fetchBillsRef.current = fetchBills;
 
   useEffect(() => {
-    fetchBillsRef.current(1, paginationRef.current.pageSize, sortOrderRef.current);
+    fetchBillsRef.current(1, paginationRef.current.pageSize, sortByRef.current, sortOrderRef.current);
   }, [filters]);
 
   useEffect(() => {
@@ -68,14 +71,14 @@ const BillList = ({ filters, onEdit, refreshState, onSelectionChange }) => {
     }
 
     const targetPage = refreshState.resetPage ? 1 : paginationRef.current.current;
-    fetchBillsRef.current(targetPage, paginationRef.current.pageSize, sortOrderRef.current);
+    fetchBillsRef.current(targetPage, paginationRef.current.pageSize, sortByRef.current, sortOrderRef.current);
   }, [refreshState]);
 
   const handleDelete = async (id) => {
     try {
       await billService.deleteBill(id);
       message.success('删除成功');
-      fetchBills(pagination.current, pagination.pageSize, sortOrder);
+      fetchBills(pagination.current, pagination.pageSize, sortBy, sortOrder);
     } catch (error) {
       message.error('删除失败');
     }
@@ -98,13 +101,17 @@ const BillList = ({ filters, onEdit, refreshState, onSelectionChange }) => {
   };
 
   const handleTableChange = (pag) => {
-    fetchBills(pag.current, pag.pageSize, sortOrder);
+    fetchBills(pag.current, pag.pageSize, sortBy, sortOrder);
   };
 
-  const handleSortChange = () => {
-    const newOrder = sortOrder === 'DESC' ? 'ASC' : 'DESC';
+  const handleSort = (field) => {
+    let newOrder = 'DESC';
+    if (sortBy === field) {
+      newOrder = sortOrder === 'DESC' ? 'ASC' : 'DESC';
+    }
+    setSortBy(field);
     setSortOrder(newOrder);
-    fetchBills(pagination.current, pagination.pageSize, newOrder);
+    fetchBills(pagination.current, pagination.pageSize, field, newOrder);
   };
 
   const handleViewDetail = (record) => {
@@ -112,13 +119,45 @@ const BillList = ({ filters, onEdit, refreshState, onSelectionChange }) => {
     setDetailVisible(true);
   };
 
+  const renderSortIcon = (field) => {
+    if (sortBy !== field) {
+      return (
+        <span style={{ color: '#bfbfbf', marginLeft: 8, display: 'inline-flex', flexDirection: 'column', verticalAlign: 'middle', fontSize: 10 }}>
+          <CaretUpOutlined style={{ height: 6 }} />
+          <CaretDownOutlined style={{ height: 6 }} />
+        </span>
+      );
+    }
+    return (
+      <span style={{ color: '#1677ff', marginLeft: 8, display: 'inline-flex', verticalAlign: 'middle' }}>
+        {sortOrder === 'DESC' ? <CaretDownOutlined /> : <CaretUpOutlined />}
+      </span>
+    );
+  };
+
+  const renderSortTitle = (label, field) => {
+    const isActive = sortBy === field;
+    return (
+      <span 
+        style={{ 
+          cursor: 'pointer', 
+          userSelect: 'none',
+          fontWeight: isActive ? 600 : 'normal',
+          color: isActive ? '#1677ff' : 'inherit',
+          display: 'inline-flex',
+          alignItems: 'center'
+        }} 
+        onClick={() => handleSort(field)}
+      >
+        {label}
+        {renderSortIcon(field)}
+      </span>
+    );
+  };
+
   const columns = [
     {
-      title: (
-        <span style={{ cursor: 'pointer', userSelect: 'none' }} onClick={handleSortChange}>
-          交易时间 {sortOrder === 'DESC' ? '↓' : '↑'}
-        </span>
-      ),
+      title: renderSortTitle('交易时间', 'transaction_time'),
       dataIndex: 'transactionTime',
       key: 'transactionTime',
       width: 150,
@@ -165,7 +204,7 @@ const BillList = ({ filters, onEdit, refreshState, onSelectionChange }) => {
       width: 140
     },
     {
-      title: '金额',
+      title: renderSortTitle('金额', 'amount'),
       dataIndex: 'amount',
       key: 'amount',
       width: 100,
