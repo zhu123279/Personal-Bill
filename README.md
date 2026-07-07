@@ -7,8 +7,8 @@
 除了日常收支记录，项目也提供了资产管理能力。用户可以维护银行卡、现金、理财账户等资产渠道，并按月记录资产快照，用来观察个人资产变化趋势。这样账单记录更偏向“流水”，资产记录更偏向“余额”，两者结合后可以更完整地回顾自己的财务状态。
 
 技术上，项目采用前后端分离架构：前端基于 React + Ant Design + ECharts 构建交互界面和数据可视化，后端基于 Node.js + Express + MySQL 提供用户认证、账单解析、数据管理和统计接口。项目适合个人本地部署、自用记账，也适合作为 React、Express、MySQL、文件导入解析、财务统计类系统的学习和二次开发参考。
-
-> 图片占位：建议在这里插入一张项目总览图，文件可命名为 `docs/images/overview.png`。内容建议是登录后的首页/仪表盘完整截图，能一眼看到收支概览、趋势图和导航栏。
+![alt text](image-5.png)
+![alt text](image-1.png)
 
 ## 功能特性
 
@@ -25,19 +25,14 @@
 
 ## 界面截图
 
-> 图片占位：仪表盘截图，建议保存为 `docs/images/dashboard.png`。内容建议包含收支汇总卡片、趋势折线图、分类饼图或月度柱状图。
+![alt text](image.png)
 
-> 图片占位：账单列表截图，建议保存为 `docs/images/bills.png`。内容建议包含筛选栏、账单表格、批量操作入口和导入按钮。
+![alt text](image-2.png)
 
-> 图片占位：账单导入截图，建议保存为 `docs/images/import-preview.png`。内容建议展示上传后的导入预览、解析结果、跳过记录和重复检测提示。
+![alt text](image-3.png)
 
-> 图片占位：资产管理截图，建议保存为 `docs/images/assets.png`。内容建议展示资产渠道、月度资产录入和资产趋势页面。
+![alt text](image-4.png)
 
-后续补图时，可以把上面的占位文字替换为：
-
-```markdown
-![仪表盘](docs/images/dashboard.png)
-```
 
 ## 技术栈
 
