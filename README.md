@@ -196,6 +196,12 @@ npm start
 
 ---
 
+## 💖 社区认可与鸣谢
+
+- 本项目认可并感谢 [LINUX DO](https://linux.do/) 社区及广大佬友的关注与支持！
+
+---
+
 ## 📄 开源许可证
 
 本项目基于 [MIT License](LICENSE) 开源。
