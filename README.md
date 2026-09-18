@@ -100,7 +100,12 @@
 ### 1. 克隆项目
 
 ```bash
+# GitHub
+git clone https://github.com/zhu123279/Personal-Bill.git
+
+# Gitee（国内镜像）
 git clone https://gitee.com/zhuyanchong/Personal-Bill.git
+
 cd Personal-Bill
 ```
 
