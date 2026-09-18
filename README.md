@@ -1,150 +1,162 @@
-# 个人账单管理系统
+# 个人账单管理系统 (Personal Bill Manager)
 
-个人账单管理系统是一个面向个人记账、消费复盘和资产跟踪的 Web 应用。它的目标不是再做一个只能手动记几笔账的小工具，而是尽量把日常已经产生的支付数据利用起来：通过导入微信、支付宝账单，将分散在不同平台里的交易记录整理成统一、可筛选、可统计、可长期沉淀的个人财务数据。
+> 一个简洁高效、支持微信与支付宝账单导入分析、资产跟踪与可视化报表的个人财务管理系统。
 
-项目围绕“导入、整理、分析、复盘”这条使用流程设计。用户可以批量导入账单，在预览阶段检查解析结果和疑似重复记录；导入后可以通过时间、金额、分类、平台、关键词等条件快速筛选账单；系统还会基于账单数据生成收支概览、分类占比、月度报表、年度报表等统计视图，帮助用户看清钱花在哪里、收入和支出如何变化，以及哪些消费习惯值得调整。
+---
 
-除了日常收支记录，项目也提供了资产管理能力。用户可以维护银行卡、现金、理财账户等资产渠道，并按月记录资产快照，用来观察个人资产变化趋势。这样账单记录更偏向“流水”，资产记录更偏向“余额”，两者结合后可以更完整地回顾自己的财务状态。
+## 📖 项目简介
 
-技术上，项目采用前后端分离架构：前端基于 React + Ant Design + ECharts 构建交互界面和数据可视化，后端基于 Node.js + Express + MySQL 提供用户认证、账单解析、数据管理和统计接口。项目适合个人本地部署、自用记账，也适合作为 React、Express、MySQL、文件导入解析、财务统计类系统的学习和二次开发参考。
+**个人账单管理系统** 是一个面向个人记账、消费复盘和资产跟踪的 Web 全栈应用。
 
-![alt text](image-5.png)
+日常生活中，我们的消费记录往往分散在微信支付、支付宝等不同渠道中。本项目旨在通过**支持批量导入微信（Excel）和支付宝（CSV）流水**，将分散的交易数据聚合整理为统一、可搜索、可分类、多维统计的个人财务数据中心，帮助你清晰掌握收支结构与资产变化趋势。
 
-![alt text](image-1.png)
+---
 
-## 功能特性
+## ✨ 核心特性
 
-- 账单导入：支持微信 Excel 账单、支付宝 CSV 账单解析导入。
-- 重复检测：导入预览阶段检测疑似重复账单，减少重复入账。
-- 账单管理：支持新增、编辑、删除、批量删除、批量更新、分页、排序、筛选和关键字搜索。
-- 分类管理：支持自定义分类，结合账单数据做分类统计。
-- 数据看板：展示收入、支出、结余、趋势、分类占比等统计信息。
-- 月度报表：按月查看收支结构和消费明细。
-- 年度报表：按年汇总收支趋势、月份对比和重点支出。
-- 资产管理：支持维护资产渠道和每月资产快照，查看资产变化。
-- 用户体系：支持注册、登录、JWT 鉴权和用户数据隔离。
-- 响应式界面：基于 Ant Design 构建，兼顾桌面端和较小屏幕使用。
+- 📥 **智能账单导入**：一键导入微信 Excel 账单与支付宝 CSV 账单，自动识别字段。
+- 🔍 **重复记账检测**：在导入预览阶段智能比对，自动标记疑似重复账单，防止重复记账。
+- 📊 **多维数据看板**：基于 ECharts 提供收支汇总、分类占比饼图、月度收支对比与消费趋势分析。
+- 🏷️ **自定义分类体系**：支持灵活的收入与支出分类设置，支持基于关键词匹配规则。
+- 📋 **高效账单管理**：支持多条件筛选（时间、金额、分类、平台、关键词）、排序、分页及批量编辑/删除。
+- 💰 **资产趋势跟踪**：支持维护银行卡、现金、理财等资产账户，按月记录资产快照并绘制资产走势。
+- 📑 **周期财务报表**：提供月度明细复盘与年度收支结构报表。
+- 🔒 **多用户与安全**：基于 JWT 认证与密码哈希加密，用户间数据完全隔离。
 
-## 界面截图
+---
 
-![alt text](image-6.png)
+## 🖼️ 界面预览
 
-![alt text](image.png)
+| 首页看板 | 账单列表 |
+| :---: | :---: |
+| ![首页看板](image-1.png) | ![账单列表](image-6.png) |
 
-![alt text](image-2.png)
+| 月度报表 | 年度统计 |
+| :---: | :---: |
+| ![月度报表](image-2.png) | ![年度统计](image-3.png) |
 
-![alt text](image-3.png)
+| 资产管理 | 账单导入预览 |
+| :---: | :---: |
+| ![资产管理](image-4.png) | ![账单导入预览](image-5.png) |
 
-![alt text](image-4.png)
+---
 
+## 🛠️ 技术栈
 
-## 技术栈
+### 前端 (Frontend)
+- **框架**：React 18
+- **路由**：React Router 6
+- **UI 组件库**：Ant Design 5
+- **数据可视化**：ECharts (`echarts-for-react`)
+- **网络请求**：Axios
+- **日期处理**：Day.js
 
-### 前端
+### 后端 (Backend)
+- **运行环境**：Node.js
+- **Web 框架**：Express 4
+- **数据库驱动**：MySQL2
+- **鉴权认证**：JSON Web Token (JWT) + bcrypt
+- **文件与解析**：Multer + SheetJS (xlsx) + iconv-lite
 
-- React 18
-- React Router 6
-- Ant Design 5
-- ECharts / echarts-for-react
-- Axios
-- Day.js
-- Create React App
+---
 
-### 后端
-
-- Node.js
-- Express
-- MySQL / mysql2
-- JWT
-- bcrypt
-- multer
-- xlsx
-- iconv-lite
-
-## 项目结构
+## 📁 项目结构
 
 ```text
 .
-├── backend
-│   ├── database
+├── backend                 # 后端服务
+│   ├── database            # 数据库结构与初始化脚本
 │   │   ├── init.js
 │   │   └── schema.sql
 │   └── src
-│       ├── config
-│       ├── middleware
-│       ├── parsers
-│       ├── routes
-│       ├── services
+│       ├── config          # 服务配置
+│       ├── middleware      # 鉴权与错误处理中间件
+│       ├── parsers         # 微信/支付宝账单解析器
+│       ├── routes          # API 路由
+│       ├── services        # 业务逻辑服务
 │       ├── app.js
 │       └── index.js
-├── frontend
+├── frontend                # 前端工程
 │   ├── public
 │   └── src
-│       ├── components
-│       ├── pages
-│       ├── services
-│       └── utils
-└── README.md
+│       ├── components      # 页面组件与通用模块
+│       ├── pages           # 各功能路由页面
+│       ├── services        # 前端 API 请求
+│       └── utils           # 工具库
+├── README.md
+└── LICENSE
 ```
 
-## 快速开始
+---
+
+## 🚀 快速上手
 
 ### 环境要求
 
-- Node.js 16+，建议使用 LTS 版本
-- npm
-- MySQL 5.7+ 或 MySQL 8+
+- **Node.js**：16.x 或更高版本 (推荐 LTS)
+- **npm**：8.x 或更高版本
+- **MySQL**：5.7+ 或 8.0+
 
 ### 1. 克隆项目
 
 ```bash
-git clone <your-repository-url>
-cd gezhang
+git clone https://gitee.com/zhuyanchong/Personal-Bill.git
+cd Personal-Bill
 ```
 
-### 2. 初始化数据库
+### 2. 数据库初始化
 
-先在 MySQL 中创建数据库和表结构：
+在 MySQL 中创建数据库并执行建表脚本：
 
 ```bash
 mysql -u root -p < backend/database/schema.sql
 ```
 
-默认数据库名为 `bill_manager`。如需修改数据库名、账号或密码，请在后端环境变量中配置。
+> 默认数据库名称为 `bill_manager`。
 
 ### 3. 配置后端环境变量
 
-在 `backend` 目录下创建 `.env` 文件：
+进入 `backend` 目录，创建 `.env` 文件：
+
+```bash
+cd backend
+cp .env.example .env
+```
+
+根据你的实际环境编辑 `.env`：
 
 ```env
-NODE_ENV=development
 PORT=3001
+NODE_ENV=development
 
+# MySQL 配置
 DB_HOST=localhost
 DB_PORT=3306
 DB_USER=root
 DB_PASSWORD=your_mysql_password
 DB_NAME=bill_manager
 
-JWT_SECRET=please_change_this_secret
+# JWT 密钥（生产环境请设置随机安全字符串）
+JWT_SECRET=your_jwt_secret_key_here
 JWT_EXPIRES_IN=7d
 
+# 允许的跨域地址
 CORS_ORIGINS=http://localhost:3000,http://127.0.0.1:3000
 ```
 
-### 4. 启动后端
+### 4. 启动后端服务
 
 ```bash
-cd backend
+# 在 backend 目录下
 npm install
 npm run dev
 ```
 
-后端服务默认运行在 `http://localhost:3001`。
+后端服务将启动于 `http://localhost:3001`。
 
-### 5. 启动前端
+### 5. 启动前端服务
 
-另开一个终端：
+新建终端窗口并进入 `frontend` 目录：
 
 ```bash
 cd frontend
@@ -152,92 +164,33 @@ npm install
 npm start
 ```
 
-前端开发服务默认运行在 `http://localhost:3000`，并通过 `frontend/package.json` 中的 `proxy` 转发接口请求到后端。
+前端开发服务器将运行在 `http://localhost:3000`。浏览器访问即可开始体验。
 
-## 常用命令
+---
 
-### 后端
+## 📥 账单导入说明
 
-```bash
-cd backend
-npm run dev      # 开发模式
-npm start        # 生产方式启动
-npm test         # 运行测试
-npm run db:init  # 执行数据库初始化脚本
-```
+系统支持自动识别导入文件格式：
 
-### 前端
+- **`.xlsx` / `.xls`**：自动识别为微信支付账单。
+- **`.csv`**：自动识别为支付宝账单（自动处理 GBK / UTF-8 编码）。
 
-```bash
-cd frontend
-npm start        # 开发模式
-npm run build    # 构建生产包
-npm test         # 运行测试
-```
+> **隐私安全建议**：开源协同与 Issue 反馈中，请勿上传含有真实银行卡号、个人姓名或商户订单明细的原始账单。
 
-## 账单导入说明
+---
 
-当前导入逻辑会根据文件后缀自动选择解析器：
+## 🤝 参与贡献
 
-- `.xlsx` / `.xls`：按微信账单 Excel 解析。
-- `.csv`：按支付宝账单 CSV 解析。
+欢迎提交 Issue 和 Pull Request 来帮助改进该项目！
 
-导入流程分为解析预览和批量保存两个阶段。系统会在预览阶段返回有效记录、跳过数量、解析错误和疑似重复记录，用户确认后再保存到账单表。
+1. Fork 本仓库
+2. 新建特性分支 (`git checkout -b feature/AmazingFeature`)
+3. 提交改动 (`git commit -m 'feat: add some amazing feature'`)
+4. 推送到分支 (`git push origin feature/AmazingFeature`)
+5. 发起 Pull Request
 
-为保护个人隐私，提交 Issue 或 Pull Request 时请勿上传真实账单文件、真实订单号、真实商户信息或完整个人资产截图。建议使用脱敏数据或自行构造的测试文件。
+---
 
-## 环境变量
+## 📄 开源许可证
 
-| 变量名 | 默认值 | 说明 |
-| --- | --- | --- |
-| `NODE_ENV` | `development` | 运行环境 |
-| `PORT` | `3001` | 后端服务端口 |
-| `DB_HOST` | `localhost` | MySQL 主机 |
-| `DB_PORT` | `3306` | MySQL 端口 |
-| `DB_USER` | `root` | MySQL 用户名 |
-| `DB_PASSWORD` | 空 | MySQL 密码 |
-| `DB_NAME` | `bill_manager` | 数据库名称 |
-| `JWT_SECRET` | `default_jwt_secret_change_in_production` | JWT 签名密钥，生产环境必须修改 |
-| `JWT_EXPIRES_IN` | `7d` | Token 有效期 |
-| `CORS_ORIGINS` | `http://localhost:3000,http://127.0.0.1:3000` | 允许跨域访问的前端地址，多个地址用英文逗号分隔 |
-
-## 开源前建议
-
-- 新增 `LICENSE` 文件，并确认许可证与 README 中声明一致。
-- 新增 `.env.example`，只放示例配置，不包含真实密码和密钥。
-- 检查提交历史和示例截图，确保没有真实账单、手机号、邮箱、订单号、Cookie、Token、数据库密码等敏感信息。
-- 如果要在 GitHub 和 Gitee 同步维护，建议保持默认分支、标签和 Release 说明一致。
-
-## 开发说明
-
-后端主要模块：
-
-- `backend/src/routes`：API 路由。
-- `backend/src/services`：业务逻辑。
-- `backend/src/parsers`：微信、支付宝账单解析与校验。
-- `backend/database`：数据库结构和初始化脚本。
-
-前端主要模块：
-
-- `frontend/src/pages`：页面级组件。
-- `frontend/src/components`：通用组件和业务组件。
-- `frontend/src/services`：接口请求封装。
-- `frontend/src/utils`：工具函数。
-
-## 贡献
-
-欢迎提交 Issue 和 Pull Request。建议在提交前先完成以下检查：
-
-```bash
-cd backend
-npm test
-
-cd ../frontend
-npm test
-```
-
-如果改动涉及账单导入、金额计算、时间解析或统计口径，请在 PR 中说明测试数据来源、覆盖场景和可能影响的页面。
-
-## 许可证
-
-MIT License
+本项目基于 [MIT License](LICENSE) 开源。
